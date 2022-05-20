@@ -15,11 +15,11 @@ Some of the components have been created for you.
 1. Fork and clone this repository
 2. `npm install`
 3. `npm start`
-4. Start json-server. In a new terminal: `npx json-server -p 4000 --watch db/db.json`
+4. [NEW] Start json-server. In a new terminal: `npx json-server -p 4000 --watch db/db.json --routes db/routes.json`
 5. Visit localhost:4000/contacts to make sure your json-server is running
 
 ## Requirements
-- A user can **view a list of contacts** at "/" when the app loads. 
+- A user can **view a list of contacts** at "/" when the app loads.
 	- Each contact should show first name and last name
 	- The list of contacts should be fetched from json-server
 - A user can **create a contact** at "/contacts/add" via a form when the "Add New Contact" menu link is clicked
@@ -37,13 +37,13 @@ Some of the components have been created for you.
 
 ## Tips
 - Check `db/db.json` and think about which URLs you are going to need when creating your `fetch` functions.
-- Using the instructions above, json-server will run on `localhost:4000`, so you can `GET` all contacts at `http//localhost:4000/contacts`. 
+- Using the instructions above, json-server will run on `localhost:4000`, so you can `GET` all contacts at `http//localhost:4000/contacts`.
 - You can add a new contact by `POST`-ing to `http//localhost:4000/contacts`
 - You can also use a tool such as Insomnia to test these requests before you start writing code
 
 ## Extension 1
 - Add support for defining the following fields for each contact:
-  - Email 
+  - Email
   - LinkedIn
   - Twitter
 - Update the new contact form and the contact view page to show these fields
@@ -73,13 +73,13 @@ Some of the components have been created for you.
   - New meetings should be saved using json-server
 - For this extension you will need to update the `db.json` file to store meeting objects. See the [json-server documentation](https://github.com/typicode/json-server#getting-started) for more details.
 - When you add meetings, you will need to "link them" to the specific contact by including the contact id in each meeting
-  
+
 ## Extension 6
-- A user can specify a contact type when adding a contact, `Work` or `Personal`. 
+- A user can specify a contact type when adding a contact, `Work` or `Personal`.
 - Update the contacts list and contact view to show the contact type. Display each type in a different style, or use conditional rendering to add a different icon or emoji next to the contact based on their type.
 - Add filter options to the contacts list so the user can toggle each contact type. Changing the filter should change the displayed contacts.
-- Each time the filter changes, the URL should also be updated. 
+- Each time the filter changes, the URL should also be updated.
   - In this instance, the specific filters should be added as URL Search params. For example, if the user filters by only "personal", the url should be something like `/?type=personal`. If the user filters by only "work", then the url should be `/?type=work`. If the user filters by both types, then the url should be `/?type=work&type=personal`. If there are no filters in the URL, then all contacts should be shown.
-  - See `useSearchParams` on [React Router](https://reactrouter.com/docs/en/v6/getting-started/tutorial#search-params) for one approach to this. 
-  - Read the documentation *carefully* on `useSearchParams`. It works similar to `useState`, but the value you get back is an instance of [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams), not an object as you may expect. 
+  - See `useSearchParams` on [React Router](https://reactrouter.com/docs/en/v6/getting-started/tutorial#search-params) for one approach to this.
+  - Read the documentation *carefully* on `useSearchParams`. It works similar to `useState`, but the value you get back is an instance of [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams), not an object as you may expect.
   - You may want to consider using `useSearchParams` in a small test project first to understand how it works.
