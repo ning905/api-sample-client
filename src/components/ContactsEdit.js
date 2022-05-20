@@ -1,20 +1,16 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom";
 
-const initialState = {
-  firstName: '',
-  lastName: '',
-  street: '',
-  city: '',
-  type: '',
-  email: '',
-  linkedin: '',
-  twitter: ''
-}
-
-function ContactsAdd({ setContacts, contacts }) {
-  const [contactData, setContactData] = useState(initialState)
+function ContactsEdit({ setContacts, contacts }) {
+  const [contactData, setContactData] = useState({})
   const navigate = useNavigate()
+  const { id } = useParams()
+
+  useEffect(async () => {
+    const res = await fetch(`http://localhost:4000/contacts/${id}`)
+    const data = await res.json()
+    setContactData(data)
+  }, [])
 
   const handleChange = event => {
     const { name, value } = event.target
@@ -26,19 +22,19 @@ function ContactsAdd({ setContacts, contacts }) {
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const res = await fetch('http://localhost:4000/contacts', {
-      method: 'POST',
+    const res = await fetch(`http://localhost:4000/contacts/${id}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contactData)
     })
     const data = await res.json()
     setContacts([...contacts, data])
-    navigate('/')
+    navigate(`/contacts/${id}`)
   }
 
   return (
     <form className="form-stack contact-form" onSubmit={handleSubmit}>
-      <h2>Create Contact</h2>
+      <h2>Update Contact</h2>
 
       <select name="type" onChange={handleChange} value={contactData.type}>
         <option id="default" >Select...</option>
@@ -69,11 +65,11 @@ function ContactsAdd({ setContacts, contacts }) {
 
       <div className="actions-section">
         <button className="button blue" type="submit">
-          Create
+          Update
         </button>
       </div>
     </form>
   )
 }
 
-export default ContactsAdd
+export default ContactsEdit
