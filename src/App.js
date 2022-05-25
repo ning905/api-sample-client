@@ -5,7 +5,7 @@ import ContactsAdd from "./components/ContactsAdd"
 import ContactsView from "./components/ContactsView"
 import ContactsEdit from "./components/ContactsEdit"
 import Meetings from "./components/Meetings"
-
+import client from './utils/client.js'
 
 import "./styles/styles.css"
 
@@ -14,9 +14,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(async () => {
-    const res = await fetch('http://localhost:4000/contacts')
-    const data = await res.json()
-    setContacts(data)
+    const data = await client.get('/contacts')
+    setContacts(data.contacts)
     setIsLoading(false)
   }, [])
 

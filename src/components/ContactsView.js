@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
+import client from '../utils/client.js'
 
 function ContactsView() {
   const [contact, setContact] = useState(false)
   const { id } = useParams()
   useEffect(async () => {
-    const res = await fetch(`http://localhost:4000/contacts/${id}`)
-    const data = await res.json()
-    setContact(data)
+    const data = await client.get(`/contacts/${id}`)
+    setContact(data.contact)
   }, [])
 
   if (!contact) {

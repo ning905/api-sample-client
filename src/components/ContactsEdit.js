@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
+import client from '../utils/client.js'
 
 function ContactsEdit({ setContacts, contacts }) {
   const [contactData, setContactData] = useState({})
@@ -7,9 +8,8 @@ function ContactsEdit({ setContacts, contacts }) {
   const { id } = useParams()
 
   useEffect(async () => {
-    const res = await fetch(`http://localhost:4000/contacts/${id}`)
-    const data = await res.json()
-    setContactData(data)
+    const data = await client.get(`/contacts/${id}`)
+    setContactData(data.contact)
   }, [])
 
   const handleChange = event => {
@@ -22,13 +22,13 @@ function ContactsEdit({ setContacts, contacts }) {
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const res = await fetch(`http://localhost:4000/contacts/${id}`, {
+    const opts = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contactData)
-    })
-    const data = await res.json()
-    setContacts([...contacts, data])
+    }
+    const data = await client.put(`/contacts/${id}`, opts)
+    setContacts([...contacts, data.contact])
     navigate(`/contacts/${id}`)
   }
 

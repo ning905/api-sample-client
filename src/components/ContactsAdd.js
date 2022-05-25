@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import client from '../utils/client.js'
 
 const initialState = {
   firstName: '',
@@ -26,13 +27,13 @@ function ContactsAdd({ setContacts, contacts }) {
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const res = await fetch('http://localhost:4000/contacts', {
+    const opts = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(contactData)
-    })
-    const data = await res.json()
-    setContacts([...contacts, data])
+    }
+    const data = await client.post('/contacts', opts)
+    setContacts([...contacts, data.contact])
     navigate('/')
   }
 

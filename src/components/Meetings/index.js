@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 import Meeting from './Meeting'
+import client from '../../utils/client.js'
 
 const initialState = {
   name: '',
@@ -12,9 +13,8 @@ function Meetings() {
   const { id } = useParams()
 
   useEffect(async () => {
-    const res = await fetch(`http://localhost:4000/contacts/${id}/meetings`)
-    const data = await res.json()
-    setMeetings(data)
+    const data = await client.get(`/contacts/${id}/meetings`)
+    setMeetings(data.meetings)
   }, [])
 
   const handleChange = event => {
@@ -27,13 +27,13 @@ function Meetings() {
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const res = await fetch(`http://localhost:4000/contacts/${id}/meetings`, {
+    const opts = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(meetingData)
-    })
-    const data = await res.json()
-    setMeetings([...meetings, data])
+    }
+    const data = await client.get(`/contacts/${id}/meetings`, opts)
+    setMeetings([...meetings, data.meeting])
   }
 
 

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import Spinner from './Spinner'
+import client from '../utils/client.js'
 
 function ContactsList({ contacts, setContacts, isLoading }) {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -10,20 +11,21 @@ function ContactsList({ contacts, setContacts, isLoading }) {
     if (checked) types.push(value)
     if (!checked) types.splice(types.indexOf(value), 1)
     setSearchParams({type: types})
+    console.log(types)
     const filteredContacts = await filterByTypes(types)
+    console.log(filteredContacts)
     setContacts(filteredContacts)
   }
 
   const filterByTypes = async (types) => {
-    const res = await fetch('http://localhost:4000/contacts')
-    const data = await res.json()
+    const res = await client.get('/contacts')
+    const data = res.contacts
     if (types.length === 0) return data
     return data.filter(contact => types.includes(contact.type))
   }
 
   const handleDelete = async id => {
-    const res = await fetch(`http://localhost:4000/contacts/${id}`, { method: 'DELETE' })
-    const data = await res.json()
+    await client.delete(`/contacts/${id}`, { method: 'DELETE' })
     const filteredContacts = contacts.filter(contact => contact.id !== id)
     setContacts(filteredContacts)
   }
