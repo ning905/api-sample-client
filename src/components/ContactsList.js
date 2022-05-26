@@ -11,9 +11,7 @@ function ContactsList({ contacts, setContacts, isLoading }) {
     if (checked) types.push(value)
     if (!checked) types.splice(types.indexOf(value), 1)
     setSearchParams({type: types})
-    console.log(types)
     const filteredContacts = await filterByTypes(types)
-    console.log(filteredContacts)
     setContacts(filteredContacts)
   }
 

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import client from '../utils/client.js'
+import initialState from './initialState.js'
 
 function ContactsEdit({ setContacts, contacts }) {
-  const [contactData, setContactData] = useState({})
+  const [contactData, setContactData] = useState(initialState)
   const navigate = useNavigate()
   const { id } = useParams()
 
@@ -28,7 +29,8 @@ function ContactsEdit({ setContacts, contacts }) {
       body: JSON.stringify(contactData)
     }
     const data = await client.put(`/contacts/${id}`, opts)
-    setContacts([...contacts, data.contact])
+    const updatedContacts = contacts.map(contact => contact.id === Number(id) ? data.contact : contact)
+    setContacts(updatedContacts)
     navigate(`/contacts/${id}`)
   }
 

@@ -1,17 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import client from '../utils/client.js'
-
-const initialState = {
-  firstName: '',
-  lastName: '',
-  street: '',
-  city: '',
-  type: '',
-  email: '',
-  linkedin: '',
-  twitter: ''
-}
+import initialState from './initialState.js'
 
 function ContactsAdd({ setContacts, contacts }) {
   const [contactData, setContactData] = useState(initialState)
