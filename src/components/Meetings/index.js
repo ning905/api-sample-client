@@ -1,41 +1,41 @@
-import { useState, useEffect } from "react"
-import { Link, useParams } from "react-router-dom"
-import Meeting from './Meeting'
-import client from '../../utils/client.js'
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import Meeting from "./Meeting";
+import client from "../../utils/client.js";
 
 const initialState = {
-  name: '',
-}
+  name: "",
+};
 
 function Meetings() {
-  const [meetings, setMeetings] = useState([])
-  const [meetingData, setMeetingData] = useState(initialState)
-  const { id } = useParams()
+  const [meetings, setMeetings] = useState([]);
+  const [meetingData, setMeetingData] = useState(initialState);
+  const { id } = useParams();
 
   useEffect(async () => {
-    const data = await client.get(`/contacts/${id}/meetings`)
-    setMeetings(data.meetings)
-  }, [])
+    const data = await client.get(`/contacts/${id}/meetings`);
+    setMeetings(data.meetings);
+  }, []);
 
-  const handleChange = event => {
-    const { name, value } = event.target
-    const newMeetingData = {...meetingData}
-    newMeetingData[`${name}`] = value
-    setMeetingData(newMeetingData)
-  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const newMeetingData = { ...meetingData };
+    newMeetingData[`${name}`] = value;
+    setMeetingData(newMeetingData);
+  };
 
-  const handleSubmit = async event => {
-    event.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const opts = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(meetingData)
-    }
-    const data = await client.get(`/contacts/${id}/meetings`, opts)
-    setMeetings([...meetings, data.meeting])
-  }
-
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(meetingData),
+    };
+    const data = await client.post(`/contacts/${id}/meetings`, opts);
+    setMeetings([...meetings, data.meeting]);
+    setMeetingData(initialState);
+  };
 
   return (
     <>
@@ -47,7 +47,14 @@ function Meetings() {
         <h2>Create A Meeting</h2>
 
         <label htmlFor="name">Meeting Name</label>
-        <input id="name" name="name" type="text" required onChange={handleChange} value={meetingData.name}/>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          onChange={handleChange}
+          value={meetingData.name}
+        />
 
         <div className="actions-section">
           <button className="button blue" type="submit">
@@ -57,10 +64,12 @@ function Meetings() {
       </form>
 
       <ul className="contacts-list">
-        {meetings.map(meeting => <Meeting key={meeting.id} data={meeting} />)}
+        {meetings.map((meeting) => (
+          <Meeting key={meeting.id} data={meeting} />
+        ))}
       </ul>
     </>
-  )
+  );
 }
 
-export default Meetings
+export default Meetings;
